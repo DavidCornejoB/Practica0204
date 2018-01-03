@@ -7,6 +7,8 @@ package controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.persistence.RollbackException;
+import javax.swing.JOptionPane;
 import modelo.Pasajero;
 import vista.VentanaPasajero;
 
@@ -17,7 +19,6 @@ import vista.VentanaPasajero;
 public class EventoVentanaPasajero implements ActionListener {
 
     private VentanaPasajero vPasajero;
-    private GestionDato gd;
 
     public EventoVentanaPasajero(VentanaPasajero vPasajero) {
         this.vPasajero = vPasajero;
@@ -27,19 +28,23 @@ public class EventoVentanaPasajero implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         if (e.getSource().equals(vPasajero.getbGuardar())) {
-            
-            long id = Long.parseLong(this.vPasajero.getTxtList().get(0).getText());
-            String nombre = vPasajero.getTxtList().get(1).getText();
-            String apellido = vPasajero.getTxtList().get(2).getText();
-            String cedula = vPasajero.getTxtList().get(3).getText();
+            try {
+                long id = Long.parseLong(this.vPasajero.getTxtList().get(0).getText());
+                String nombre = vPasajero.getTxtList().get(1).getText();
+                String apellido = vPasajero.getTxtList().get(2).getText();
+                String cedula = vPasajero.getTxtList().get(3).getText();
 
-            Pasajero p = new Pasajero(id, nombre, apellido, cedula);
-            this.vPasajero.getGd().insertarPasajero(p);
-            this.vPasajero.getGd().leerPasajero();
+                Pasajero p = new Pasajero(id, nombre, apellido, cedula);
+                this.vPasajero.getGd().insertarPasajero(p);
+                this.vPasajero.getGd().leerPasajero();
 
-            this.vPasajero.getGd().addPasajero(new Pasajero(id, nombre, apellido, cedula));
-            this.vPasajero.getModeloTabla().setDataVector(this.cargaPasajero(this.vPasajero.getGd().getPasajeroList().size(), 4), this.vPasajero.getEncabezado());
+                this.vPasajero.getGd().addPasajero(new Pasajero(id, nombre, apellido, cedula));
+                this.vPasajero.getModeloTabla().setDataVector(this.cargaPasajero(this.vPasajero.getGd().getPasajeroList().size(), 4), this.vPasajero.getEncabezado());
+            } catch (RollbackException err) {
 
+                JOptionPane.showInternalMessageDialog(vPasajero, "Ya existe este dato en nuestra base de datos", "Error", JOptionPane.ERROR_MESSAGE);
+
+            }
             this.vPasajero.getTxtList().get(0).setText("");
             this.vPasajero.getTxtList().get(1).setText("");
             this.vPasajero.getTxtList().get(2).setText("");
@@ -57,7 +62,6 @@ public class EventoVentanaPasajero implements ActionListener {
             retorno[i][1] = p.getNombre();
             retorno[i][2] = p.getApellido();
             retorno[i][3] = p.getCedula();
-            this.gd.insertarPasajero(p);
             i++;
 
         }

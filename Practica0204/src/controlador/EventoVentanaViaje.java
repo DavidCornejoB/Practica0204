@@ -7,6 +7,8 @@ package controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.persistence.RollbackException;
+import javax.swing.JOptionPane;
 import modelo.Viaje;
 import vista.VentanaViaje;
 
@@ -26,16 +28,27 @@ public class EventoVentanaViaje implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         if (e.getSource().equals(this.vViaje.getbGuardar())) {
-            long id = Long.parseLong(this.vViaje.getTxtList().get(0).getText());
-            int compania = this.vViaje.getComboBox().getSelectedIndex();
-            String destino = this.vViaje.getTxtList().get(1).getText();
+            try {
+                try {
+                    long id = Long.parseLong(this.vViaje.getTxtList().get(0).getText());
+                    int compania = this.vViaje.getComboBox().getSelectedIndex();
+                    String destino = this.vViaje.getTxtList().get(1).getText();
 
-            Viaje v = new Viaje(id, this.vViaje.getGd().getCompaniaList().get(compania), destino);
-            this.vViaje.getGd().insertarViaje(v);
-            this.vViaje.getGd().leerViaje();
+                    Viaje v = new Viaje(id, this.vViaje.getGd().getCompaniaList().get(compania), destino);
+                    this.vViaje.getGd().insertarViaje(v);
+                    this.vViaje.getGd().leerViaje();
 
-            this.vViaje.getGd().addViaje(new Viaje(id, this.vViaje.getGd().getCompaniaList().get(compania), destino));
-            this.vViaje.getModeloTabla().setDataVector(this.cargaViaje(this.vViaje.getGd().getViajeList().size(), 3), this.vViaje.getEncabezado());
+                    this.vViaje.getGd().addViaje(new Viaje(id, this.vViaje.getGd().getCompaniaList().get(compania), destino));
+                    this.vViaje.getModeloTabla().setDataVector(this.cargaViaje(this.vViaje.getGd().getViajeList().size(), 3), this.vViaje.getEncabezado());
+                } catch (RollbackException err) {
+                    JOptionPane.showInternalMessageDialog(vViaje, "Ya se encuentra el dato en nuestra base de datos", "Error", JOptionPane.ERROR_MESSAGE);
+
+                }
+
+            } catch (NumberFormatException errr) {
+                JOptionPane.showInternalMessageDialog(vViaje, "Ingresar solo numeros en los parámetros pertinentes", "Error", JOptionPane.ERROR_MESSAGE);
+
+            }
             this.vViaje.getTxtList().get(0).setText("");
             this.vViaje.getComboBox().setSelectedIndex(-1);
 

@@ -7,6 +7,8 @@ package controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.persistence.RollbackException;
+import javax.swing.JOptionPane;
 import modelo.Compania;
 import vista.VentanaCompania;
 
@@ -26,22 +28,30 @@ public class EventoVentanaCompania implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(vCompania.getbGuardar())) {
+            try {
+                try {
+                    long id = Long.parseLong(this.vCompania.getTxtList().get(0).getText());
+                    String nombre = this.vCompania.getTxtList().get(1).getText();
+                    String nUnidades = this.vCompania.getTxtList().get(2).getText();
+                    int terminal = this.vCompania.getComboBox().getSelectedIndex();
 
-            long id = Long.parseLong(this.vCompania.getTxtList().get(0).getText());
-            String nombre = this.vCompania.getTxtList().get(1).getText();
-            String nUnidades = this.vCompania.getTxtList().get(2).getText();
-            int terminal = this.vCompania.getComboBox().getSelectedIndex();
-            
+                    int numUnidades = Integer.parseInt(nUnidades);
 
-            int numUnidades = Integer.parseInt(nUnidades);
+                    Compania c = new Compania(id, nombre, numUnidades, this.vCompania.getGd().getTerminalList().get(terminal));
+                    this.vCompania.getGd().insertarCompania(c);
+                    this.vCompania.getGd().leerCompania();
 
-            Compania c = new Compania(id, nombre, numUnidades, this.vCompania.getGd().getTerminalList().get(terminal));
-            this.vCompania.getGd().insertarCompania(c);
-            this.vCompania.getGd().leerCompania();
+                    this.vCompania.getGd().addCompania(new Compania(id, nombre, numUnidades, this.vCompania.getGd().getTerminalList().get(terminal)));
+                    this.vCompania.getModeloTabla().setDataVector(this.cargaCompania(this.vCompania.getGd().getCompaniaList().size(), 4), this.vCompania.getEncabezado());
+                } catch (RollbackException err) {
+                    JOptionPane.showInternalMessageDialog(vCompania, "Ya existe este dato en nuestra base de datos", "Error", JOptionPane.ERROR_MESSAGE);
 
-            this.vCompania.getGd().addCompania(new Compania(id, nombre, numUnidades, this.vCompania.getGd().getTerminalList().get(terminal)));
-            this.vCompania.getModeloTabla().setDataVector(this.cargaCompania(this.vCompania.getGd().getCompaniaList().size(), 4), this.vCompania.getEncabezado());
+                }
 
+            } catch (NumberFormatException errr) {
+                JOptionPane.showInternalMessageDialog(vCompania, "Ingresar solo numeros en los parámetros pertinentes", "Error", JOptionPane.ERROR_MESSAGE);
+
+            }
             this.vCompania.getTxtList().get(0).setText("");
             this.vCompania.getTxtList().get(1).setText("");
             this.vCompania.getComboBox().setSelectedIndex(-1);
