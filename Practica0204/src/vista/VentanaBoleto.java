@@ -55,15 +55,17 @@ public class VentanaBoleto extends JInternalFrame {
     public void iniciaComponentes() {
 
         this.panel = new JPanel();
-        JPanel panelCampos = new JPanel(new GridLayout(3, 2));
+        JPanel panelCampos = new JPanel(new GridLayout(4, 2));
         JPanel pBotones = new JPanel(new BorderLayout(0, 0));
 
         this.lblList = new ArrayList();
+        this.lblList.add(new JLabel("Id:"));
         this.lblList.add(new JLabel("Pasajero:"));
         this.lblList.add(new JLabel("Viaje:"));
         this.lblList.add(new JLabel("N° Boletos:"));
 
         this.txtList = new ArrayList();
+        this.txtList.add(new JTextField(15));
         this.txtList.add(new JTextField(15));
 
         this.comboBox = new ArrayList<>();
@@ -73,23 +75,26 @@ public class VentanaBoleto extends JInternalFrame {
         this.bGuardar = new JButton("Guardar");
         this.bGuardar.addActionListener(new EventoVentanaBoleto(this));
 
-        this.encabezado = new Object[3];
-        this.encabezado[0] = "Pasajero";
-        this.encabezado[1] = "Viaje";
-        this.encabezado[2] = "N° Boletos";
+        this.encabezado = new Object[4];
+        this.encabezado[0] = "Id";
+        this.encabezado[1] = "Pasajero";
+        this.encabezado[2] = "Viaje";
+        this.encabezado[3] = "N° Boletos";
 
-        this.cargaBoleto(this.gd.getBoletoList().size(), 3);
+        this.cargaBoleto(this.gd.getBoletoList().size(), 4);
 
         this.modeloTabla = new DefaultTableModel(this.datos, this.encabezado);
         this.tabla = new JTable(this.modeloTabla);
         this.scroll = new JScrollPane(this.tabla);
 
         panelCampos.add(this.lblList.get(0));
-        panelCampos.add(this.comboBox.get(0));
-        panelCampos.add(this.lblList.get(1));
-        panelCampos.add(this.comboBox.get(1));
-        panelCampos.add(this.lblList.get(2));
         panelCampos.add(this.txtList.get(0));
+        panelCampos.add(this.lblList.get(1));
+        panelCampos.add(this.comboBox.get(0));
+        panelCampos.add(this.lblList.get(2));
+        panelCampos.add(this.comboBox.get(1));
+        panelCampos.add(this.lblList.get(3));
+        panelCampos.add(this.txtList.get(1));
 
         panel.add(panelCampos);
         panel.add(this.bGuardar);
@@ -103,9 +108,10 @@ public class VentanaBoleto extends JInternalFrame {
         Object[][] retorno = new Object[f][c];
         int i = 0;
         for (Boleto b : this.gd.getBoletoList()) {
-            retorno[i][0] = b.getPasajero().getNombre() + " " + b.getPasajero().getApellido();
-            retorno[i][1] = b.getViaje().getDestino();
-            retorno[i][2] = b.getNumBoletos();
+            retorno[i][0] = b.getId();
+            retorno[i][1] = b.getPasajero().getNombre() + " " + b.getPasajero().getApellido();
+            retorno[i][2] = b.getViaje().getDestino();
+            retorno[i][3] = b.getNumBoletos();
 
             i++;
         }

@@ -29,12 +29,11 @@ public class EventoVentanaBoleto implements ActionListener {
         if (ae.getSource().equals(vBoleto.getbGuardar())) {
 
             try {
-
+                long id = Long.parseLong(this.vBoleto.getTxtList().get(0).getText());
                 int pasajero = this.vBoleto.getComboBox().get(0).getSelectedIndex();
                 int viaje = this.vBoleto.getComboBox().get(1).getSelectedIndex();
-                String nBoletos = this.vBoleto.getTxtList().get(0).getText();
+                String nBoletos = this.vBoleto.getTxtList().get(1).getText();
                 int numBoletos = Integer.parseInt(nBoletos);
-                long id = 0;
 
                 Boleto b = new Boleto(id, this.vBoleto.getGd().getPasajeroList().get(pasajero), this.vBoleto.getGd().getViajeList().get(viaje), numBoletos);
                 this.vBoleto.getGd().insertarBoleto(b);
@@ -62,7 +61,7 @@ public class EventoVentanaBoleto implements ActionListener {
 
         for (Boleto b : this.vBoleto.getGd().getBoletoList()) {
 
-            retorno[i][0] = i + 1;
+            retorno[i][0] = b.getId();
             retorno[i][1] = b.getPasajero().getNombre() + " " + b.getPasajero().getApellido();
             retorno[i][2] = b.getViaje().getDestino();
             retorno[i][3] = b.getNumBoletos();
