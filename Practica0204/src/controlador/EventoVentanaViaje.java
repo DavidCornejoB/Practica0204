@@ -26,10 +26,9 @@ public class EventoVentanaViaje implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         if (e.getSource().equals(this.vViaje.getbGuardar())) {
-
+            long id = Long.parseLong(this.vViaje.getTxtList().get(0).getText());
             int compania = this.vViaje.getComboBox().getSelectedIndex();
-            String destino = this.vViaje.getTxtList().get(0).getText();
-            long id = 4;
+            String destino = this.vViaje.getTxtList().get(1).getText();
 
             Viaje v = new Viaje(id, this.vViaje.getGd().getCompaniaList().get(compania), destino);
             this.vViaje.getGd().insertarViaje(v);
@@ -47,10 +46,10 @@ public class EventoVentanaViaje implements ActionListener {
         Object[][] retorno = new Object[size][i];
         int a = 0;
         for (Viaje v : this.vViaje.getGd().getViajeList()) {
-            retorno[i][0] = a + 1;
-            retorno[i][1] = v.getCompania().getNombre();
-            retorno[i][2] = v.getDestino();
-            i++;
+            retorno[a][0] = v.getId();
+            retorno[a][1] = v.getCompania().getNombre();
+            retorno[a][2] = v.getDestino();
+            a++;
         }
         return retorno;
 

@@ -7,6 +7,7 @@ package controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.persistence.RollbackException;
 import javax.swing.JOptionPane;
 import modelo.Boleto;
 import vista.VentanaBoleto;
@@ -29,19 +30,24 @@ public class EventoVentanaBoleto implements ActionListener {
         if (ae.getSource().equals(vBoleto.getbGuardar())) {
 
             try {
-                long id = Long.parseLong(this.vBoleto.getTxtList().get(0).getText());
-                int pasajero = this.vBoleto.getComboBox().get(0).getSelectedIndex();
-                int viaje = this.vBoleto.getComboBox().get(1).getSelectedIndex();
-                String nBoletos = this.vBoleto.getTxtList().get(1).getText();
-                int numBoletos = Integer.parseInt(nBoletos);
+                try {
+                    long id = Long.parseLong(this.vBoleto.getTxtList().get(0).getText());
+                    int pasajero = this.vBoleto.getComboBox().get(0).getSelectedIndex();
+                    int viaje = this.vBoleto.getComboBox().get(1).getSelectedIndex();
+                    String nBoletos = this.vBoleto.getTxtList().get(1).getText();
+                    int numBoletos = Integer.parseInt(nBoletos);
 
-                Boleto b = new Boleto(id, this.vBoleto.getGd().getPasajeroList().get(pasajero), this.vBoleto.getGd().getViajeList().get(viaje), numBoletos);
-                this.vBoleto.getGd().insertarBoleto(b);
-                this.vBoleto.getGd().leerBoleto();
+                    Boleto b = new Boleto(id, this.vBoleto.getGd().getPasajeroList().get(pasajero), this.vBoleto.getGd().getViajeList().get(viaje), numBoletos);
+                    this.vBoleto.getGd().insertarBoleto(b);
+                    this.vBoleto.getGd().leerBoleto();
 
-                this.vBoleto.getGd().addBoleto(new Boleto(id, this.vBoleto.getGd().getPasajeroList().get(pasajero), this.vBoleto.getGd().getViajeList().get(viaje), numBoletos));
-                this.vBoleto.getModeloTabla().setDataVector(this.cargaBoleto(this.vBoleto.getGd().getBoletoList().size(), 4), this.vBoleto.getEncabezado());
+                    this.vBoleto.getGd().addBoleto(new Boleto(id, this.vBoleto.getGd().getPasajeroList().get(pasajero), this.vBoleto.getGd().getViajeList().get(viaje), numBoletos));
+                    this.vBoleto.getModeloTabla().setDataVector(this.cargaBoleto(this.vBoleto.getGd().getBoletoList().size(), 4), this.vBoleto.getEncabezado());
 
+                } catch (RollbackException err) {
+                    JOptionPane.showInternalMessageDialog(vBoleto, "Ya existe este dato en nuestra base de datos", "Error", JOptionPane.ERROR_MESSAGE);
+
+                }
             } catch (NumberFormatException err) {
 
                 JOptionPane.showInternalMessageDialog(vBoleto, "Ingresar solo numeros en el parametro Numero Boleto", "Error", JOptionPane.ERROR_MESSAGE);

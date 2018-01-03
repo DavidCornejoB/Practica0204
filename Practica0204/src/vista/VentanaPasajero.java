@@ -54,9 +54,10 @@ public class VentanaPasajero extends JInternalFrame {
     public void iniciaComponentes() {
 
         this.panel = new JPanel();
-        JPanel panelCampos = new JPanel(new GridLayout(3, 2));
+        JPanel panelCampos = new JPanel(new GridLayout(4, 2));
 
         this.lblList = new ArrayList();
+        this.lblList.add(new JLabel("Id:"));
         this.lblList.add(new JLabel("Nombre:"));
         this.lblList.add(new JLabel("Apellido:"));
         this.lblList.add(new JLabel("Cédula:"));
@@ -65,13 +66,13 @@ public class VentanaPasajero extends JInternalFrame {
         this.txtList.add(new JTextField(15));
         this.txtList.add(new JTextField(15));
         this.txtList.add(new JTextField(15));
+        this.txtList.add(new JTextField(15));
 
-        //this.gd.
         this.bGuardar = new JButton("Guardar");
         this.bGuardar.addActionListener(new EventoVentanaPasajero(this));
 
         this.encabezado = new Object[4];
-        this.encabezado[0] = "N°";
+        this.encabezado[0] = "Id°";
         this.encabezado[1] = "Nombre";
         this.encabezado[2] = "Apellido";
         this.encabezado[3] = "Cedula";
@@ -87,6 +88,8 @@ public class VentanaPasajero extends JInternalFrame {
         panelCampos.add(this.txtList.get(1));
         panelCampos.add(this.lblList.get(2));
         panelCampos.add(this.txtList.get(2));
+        panelCampos.add(this.lblList.get(3));
+        panelCampos.add(this.txtList.get(3));
 
         this.panel.add(panelCampos);
         this.panel.add(bGuardar);
@@ -99,7 +102,7 @@ public class VentanaPasajero extends JInternalFrame {
         Object[][] retorno = new Object[f][c];
         int i = 0;
         for (Pasajero p : this.gd.getPasajeroList()) {
-            retorno[i][0] = i + 1;
+            retorno[i][0] = p.getId();
             retorno[i][1] = p.getNombre();
             retorno[i][2] = p.getApellido();
             retorno[i][3] = p.getCedula();

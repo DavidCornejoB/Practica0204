@@ -27,10 +27,11 @@ public class EventoVentanaCompania implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(vCompania.getbGuardar())) {
 
-            String nombre = this.vCompania.getTxtList().get(0).getText();
-            String nUnidades = this.vCompania.getTxtList().get(1).getText();
+            long id = Long.parseLong(this.vCompania.getTxtList().get(0).getText());
+            String nombre = this.vCompania.getTxtList().get(1).getText();
+            String nUnidades = this.vCompania.getTxtList().get(2).getText();
             int terminal = this.vCompania.getComboBox().getSelectedIndex();
-            long id = 1;
+            
 
             int numUnidades = Integer.parseInt(nUnidades);
 
@@ -54,7 +55,7 @@ public class EventoVentanaCompania implements ActionListener {
         int i = 0;
         for (Compania com : vCompania.getGd().getCompaniaList()) {
 
-            retorno[i][0] = i + 1;
+            retorno[i][0] = com.getId();
             retorno[i][1] = com.getNombre();
             retorno[i][2] = com.getNumUnidades();
             retorno[i][3] = com.getTerminal().getNombre();

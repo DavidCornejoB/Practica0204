@@ -52,14 +52,16 @@ public class VentanaTerminal extends JInternalFrame {
     public void iniciaComponentes() {
 
         this.panel = new JPanel();
-        JPanel panelCampos = new JPanel(new GridLayout(2, 2));
+        JPanel panelCampos = new JPanel(new GridLayout(3, 2));
         JPanel pBotones = new JPanel(new BorderLayout(0, 0));
 
         this.lblList = new ArrayList();
+        this.lblList.add(new JLabel("Id:"));
         this.lblList.add(new JLabel("Nombre:"));
         this.lblList.add(new JLabel("Direccion:"));
 
         this.txtList = new ArrayList();
+        this.txtList.add(new JTextField(15));
         this.txtList.add(new JTextField(15));
         this.txtList.add(new JTextField(15));
 
@@ -67,7 +69,7 @@ public class VentanaTerminal extends JInternalFrame {
         this.bGuardar.addActionListener(new EventoVentanaTerminal(this));
 
         this.encabezado = new Object[3];
-        this.encabezado[0] = "N°";
+        this.encabezado[0] = "Id°";
         this.encabezado[1] = "Nombre";
         this.encabezado[2] = "Direccion";
 
@@ -81,6 +83,8 @@ public class VentanaTerminal extends JInternalFrame {
         panelCampos.add(this.txtList.get(0));
         panelCampos.add(this.lblList.get(1));
         panelCampos.add(this.txtList.get(1));
+        panelCampos.add(this.lblList.get(2));
+        panelCampos.add(this.txtList.get(2));
 
         panel.add(panelCampos);
         panel.add(this.bGuardar);
@@ -94,7 +98,7 @@ public class VentanaTerminal extends JInternalFrame {
         Object[][] retorno = new Object[f][c];
         int i = 0;
         for (Terminal t : this.gd.getTerminalList()) {
-            retorno[i][0] = i + 1;
+            retorno[i][0] = t.getId();
             retorno[i][1] = t.getNombre();
             retorno[i][2] = t.getDireccion();
 

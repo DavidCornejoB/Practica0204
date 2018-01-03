@@ -27,11 +27,11 @@ public class EventoVentanaPasajero implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         if (e.getSource().equals(vPasajero.getbGuardar())) {
-
-            String nombre = vPasajero.getTxtList().get(0).getText();
-            String apellido = vPasajero.getTxtList().get(1).getText();
-            String cedula = vPasajero.getTxtList().get(2).getText();
-            long id = 2;
+            
+            long id = Long.parseLong(this.vPasajero.getTxtList().get(0).getText());
+            String nombre = vPasajero.getTxtList().get(1).getText();
+            String apellido = vPasajero.getTxtList().get(2).getText();
+            String cedula = vPasajero.getTxtList().get(3).getText();
 
             Pasajero p = new Pasajero(id, nombre, apellido, cedula);
             this.vPasajero.getGd().insertarPasajero(p);
@@ -43,6 +43,7 @@ public class EventoVentanaPasajero implements ActionListener {
             this.vPasajero.getTxtList().get(0).setText("");
             this.vPasajero.getTxtList().get(1).setText("");
             this.vPasajero.getTxtList().get(2).setText("");
+            this.vPasajero.getTxtList().get(3).setText("");
         }
     }
 
@@ -52,7 +53,7 @@ public class EventoVentanaPasajero implements ActionListener {
         int i = 0;
         for (Pasajero p : this.vPasajero.getGd().getPasajeroList()) {
 
-            retorno[i][0] = i + 1;
+            retorno[i][0] = p.getId();
             retorno[i][1] = p.getNombre();
             retorno[i][2] = p.getApellido();
             retorno[i][3] = p.getCedula();

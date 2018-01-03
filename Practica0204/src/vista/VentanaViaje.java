@@ -53,14 +53,16 @@ public class VentanaViaje extends JInternalFrame {
     public void iniciaComponentes() {
 
         this.panel = new JPanel();
-        JPanel panelCampos = new JPanel(new GridLayout(2, 2));
+        JPanel panelCampos = new JPanel(new GridLayout(3, 2));
         JPanel pBotones = new JPanel(new BorderLayout(0, 0));
 
         this.lblList = new ArrayList();
+        this.lblList.add(new JLabel("Id:"));
         this.lblList.add(new JLabel("Compañia:"));
         this.lblList.add(new JLabel("Destino:"));
 
         this.txtList = new ArrayList();
+        this.txtList.add(new JTextField(15));
         this.txtList.add(new JTextField(15));
 
         this.comboBox = new JComboBox(this.cargaComboCompania(this.gd.getCompaniaList().size()));
@@ -69,7 +71,7 @@ public class VentanaViaje extends JInternalFrame {
         this.bGuardar.addActionListener(new EventoVentanaViaje(this));
 
         this.encabezado = new Object[3];
-        this.encabezado[0] = "N°";
+        this.encabezado[0] = "Id°";
         this.encabezado[1] = "Compañia";
         this.encabezado[2] = "Destino";
 
@@ -80,9 +82,11 @@ public class VentanaViaje extends JInternalFrame {
         this.scroll = new JScrollPane(this.tabla);
 
         panelCampos.add(this.lblList.get(0));
-        panelCampos.add(this.comboBox);
-        panelCampos.add(this.lblList.get(1));
         panelCampos.add(this.txtList.get(0));
+        panelCampos.add(this.lblList.get(1));
+        panelCampos.add(this.comboBox);
+        panelCampos.add(this.lblList.get(2));
+        panelCampos.add(this.txtList.get(1));
 
         panel.add(panelCampos);
         panel.add(this.bGuardar);
@@ -97,11 +101,11 @@ public class VentanaViaje extends JInternalFrame {
         Object[][] retorno = new Object[size][i];
         int a = 0;
         for (Viaje v : this.gd.getViajeList()) {
-            retorno[i][0] = a + 1;
-            retorno[i][1] = v.getCompania().getNombre();
-            retorno[i][2] = v.getDestino();
+            retorno[a][0] = v.getId();
+            retorno[a][1] = v.getCompania().getNombre();
+            retorno[a][2] = v.getDestino();
 
-            i++;
+            a++;
         }
         return retorno;
     }

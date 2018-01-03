@@ -54,15 +54,18 @@ public class VentanaCompania extends JInternalFrame {
     public void iniciaComponentes() {
 
         this.panel = new JPanel();
-        JPanel panelCampos = new JPanel(new GridLayout(3, 2));
+        JPanel panelCampos = new JPanel(new GridLayout(4, 2));
         JPanel pBotones = new JPanel(new BorderLayout(0, 0));
 
         this.lblList = new ArrayList();
+        this.lblList.add(new JLabel("Id:"));
         this.lblList.add(new JLabel("Nombre:"));
         this.lblList.add(new JLabel("Numero Unidades:"));
         this.lblList.add(new JLabel("Terminal:"));
+        
 
         this.txtList = new ArrayList();
+        this.txtList.add(new JTextField(15));
         this.txtList.add(new JTextField(15));
         this.txtList.add(new JTextField(15));
 
@@ -72,7 +75,7 @@ public class VentanaCompania extends JInternalFrame {
         this.bGuardar.addActionListener(new EventoVentanaCompania(this));
 
         this.encabezado = new Object[4];
-        this.encabezado[0] = "N°";
+        this.encabezado[0] = "Id°";
         this.encabezado[1] = "Nombre";
         this.encabezado[2] = "N° Unidades";
         this.encabezado[3] = "Terminal";
@@ -88,6 +91,8 @@ public class VentanaCompania extends JInternalFrame {
         panelCampos.add(this.lblList.get(1));
         panelCampos.add(this.txtList.get(1));
         panelCampos.add(this.lblList.get(2));
+        panelCampos.add(this.txtList.get(2));
+        panelCampos.add(this.lblList.get(3));
         panelCampos.add(this.comboBox);
         panel.add(panelCampos);
         panel.add(this.bGuardar);
@@ -101,7 +106,7 @@ public class VentanaCompania extends JInternalFrame {
         Object[][] retorno = new Object[f][c];
         int i = 0;
         for (Compania com : this.gd.getCompaniaList()) {
-            retorno[i][0] = i + 1;
+            retorno[i][0] = com.getId();
             retorno[i][1] = com.getNombre();
             retorno[i][2] = com.getNumUnidades();
             retorno[i][3] = com.getTerminal().getNombre();
